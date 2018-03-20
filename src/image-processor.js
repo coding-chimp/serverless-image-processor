@@ -9,7 +9,7 @@ class ImageProcessor {
 
     return new Promise((res, rej) => {
       this.sharp(new Buffer(image.buffer))
-        .resize(size.w, size.h)
+        .resize(size.width, size.height)
         .jpeg({quality: quality})
         .toBuffer()
         .then(data => {
