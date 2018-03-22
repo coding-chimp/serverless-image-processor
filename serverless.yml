@@ -13,7 +13,7 @@ functions:
     handler: handler.processImage
     events:
       - http:
-          path: process-image
+          path: process-image/{bucket}/{file}
           method: get
 
 custom:
