@@ -37,6 +37,21 @@ class ImageProcessor {
         .catch(err => rej(err))
     });
   }
+
+  webp(image) {
+    return new Promise((res, rej) => {
+      this.sharp(new Buffer(image.buffer))
+        .webp()
+        .toBuffer()
+        .then(data => {
+          return res({
+            image: data,
+            contentType: 'image/webp',
+          });
+        })
+        .catch(err => rej(err))
+    });
+  }
 }
 
 module.exports = ImageProcessor;

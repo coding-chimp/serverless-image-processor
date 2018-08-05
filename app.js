@@ -1,7 +1,7 @@
 const app = require('express')();
 const bodyParser = require('body-parser');
 const Sharp = require('sharp');
-const PORT = 3000;
+const PORT = 4000;
 const ImageFetcher = require('./src/image-fetcher');
 const ImageProcessor = require('./src/image-processor');
 
@@ -18,11 +18,13 @@ app.get('/process-image', (req, res) => {
     height: req && +req.query.height || null,
   };
   const blur = req && +req.query.blur || false;
+  const webp = req && req.query.webp || false;
 
   return imageFetcher
     .fetchImage(fileName)
     .then(data => imageProcessor.resize(data.image, size, quality))
     .then(data => blur ? imageProcessor.blur(data.image, blur) : data)
+    .then(data => webp ? imageProcessor.webp(data.image) : data)
     .then(data => {
       const img = new Buffer(data.image.buffer, 'base64');
       res.writeHead(200, {

@@ -14,11 +14,13 @@ module.exports.processImage = (event, context, callback) => {
     height: event.queryStringParameters && +event.queryStringParameters.height || null,
   };
   const blur = event.queryStringParameters && +event.queryStringParameters.blur || false;
+  const webp = event.queryStringParameters && event.queryStringParameters.webp || false;
 
   return imageFetcher
     .fetchImage(file)
     .then(data => imageProcessor.resize(data.image, size, quality))
     .then(data => blur ? imageProcessor.blur(data.image, blur) : data)
+    .then(data => webp ? imageProcessor.webp(data.image) : data)
     .then(data => {
       const contentType = data.contentType;
       const img = new Buffer(data.image.buffer, 'base64');
